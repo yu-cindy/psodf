@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AppController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::get('/', function () {
     return redirect('/login');
 });
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/basic', [HomeController::class, 'basic'])->name('basic');
+Route::post('/basic', [SettingController::class, 'basic_update'])->name('basic.update');
 Route::get('/classs', [HomeController::class, 'classs'])->name('classs.classs');
 Route::post('/classs/store', [SettingController::class, 'classs_store'])->name('classs.store');
 Route::post('/classs/update', [SettingController::class, 'classs_update'])->name('classs.update');
@@ -42,3 +45,5 @@ Route::get('/batch', [HomeController::class, 'batch'])->name('batch');
 Route::post('/batch/store', [SettingController::class, 'batch_store'])->name('batch.store');
 Route::post('/batch/update', [SettingController::class, 'batch_update'])->name('batch.update');
 Route::post('/batch/delete', [SettingController::class, 'batch_delete'])->name('batch.delete');
+Route::get('api_test', [AppController::class, 'api_test']);
+Route::post('/app/login', [AppController::class, 'login']);

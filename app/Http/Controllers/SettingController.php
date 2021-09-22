@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ClasssRepository;
 use App\Repositories\BatchRepository;
 use App\Repositories\StudentRepository;
+use App\Repositories\SchoolRepository;
 use Auth;
 
 class SettingController extends Controller
@@ -13,13 +14,15 @@ class SettingController extends Controller
     protected $classsRepo;
     protected $batchRepo;
     protected $studentRepo;
+    protected $schoolRepo;
 
-    public function __construct(ClasssRepository $classsRepo,BatchRepository $batchRepo,StudentRepository $studentRepo)
+    public function __construct(ClasssRepository $classsRepo,BatchRepository $batchRepo,StudentRepository $studentRepo,SchoolRepository $schoolRepo)
     {
         $this->middleware(['auth','verified']);
         $this->classsRepo=$classsRepo;
         $this->batchRepo=$batchRepo;
         $this->studentRepo=$studentRepo;
+        $this->schoolRepo=$schoolRepo;
     }
 
     public function classs_store(Request $request){
@@ -189,5 +192,12 @@ class SettingController extends Controller
         }
         return json_encode($return);
     }
-
+    public function basic_update(Request $request){
+        $result=$this->schoolRepo->update($request->all());
+        if($result){
+            return redirect()->route('basic')->with('success_msg', '基本資料已更新！');
+        }else{
+            return redirect()->route('basic')->with('error_msg', '基本資料更新失敗！');
+        }
+    }
 }

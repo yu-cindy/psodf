@@ -36,5 +36,8 @@ class school extends Model
     public function batch(){
         return $this->hasMany('App\Models\batch','School_id','id');
     }
+    public function student(){
+        return $this->hasMany('App\Models\student','School_id','id');
+    }
 
 }

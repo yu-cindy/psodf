@@ -89,4 +89,8 @@ class HomeController extends Controller
             return view('batch',['school_classs'=>$school_classs,'school_batch'=>$school_batch]);
         }
     }
+    public function basic(){
+        return view('basic');
+    }
+
 }

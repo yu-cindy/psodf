@@ -38,12 +38,43 @@
         </a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link wave-effect" href="{{ route('home') }}">
+        {{--<a class="nav-link wave-effect" href="{{ route('home') }}">
           <span class="icon-holder">
             <i class="fas fa-home"></i>
           </span>
           <span class="title">{{Auth::user()->school->School_Name}}</span>
+        </a>--}}
+        <a class="nav-link dropdown-toggle" href="#">
+          <span class="icon-holder">
+            <i class="fas fa-home"></i>
+          </span>
+          <span class="title">{{Auth::user()->school->School_Name}}</span>
+          <span class="arrow">
+            <i class="fas fa-angle-right"></i>
+          </span>
         </a>
+            @php
+            if(preg_match('(basic)', Route::currentRouteName()) === 1) {
+                $basic_dropdown=true;
+            }else{
+                $basic_dropdown=false;
+            }
+            @endphp
+            @if($basic_dropdown)
+            <ul class="dropdown-menu stay-open">
+            @else
+            <ul class="dropdown-menu">
+            @endif
+                <li class="nav-item dropdown">
+
+
+                    <a class="nav-link dropdown-toggle" href="#">
+                    <span><a href="{{route('basic')}}" class="{{ (preg_match('(basic)', Route::currentRouteName()) === 1) ? 'text-info enlarge_text' : '' }}">基本設定</a></span>
+                    </a>
+                </li>
+            </ul>
+
+
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#">
