@@ -69,7 +69,7 @@
 
 
                     <a class="nav-link dropdown-toggle" href="#">
-                    <span><a href="{{route('basic')}}" class="{{ (preg_match('(basic)', Route::currentRouteName()) === 1) ? 'text-info enlarge_text' : '' }}">基本設定</a></span>
+                    <span><a href="{{route('basic')}}" class="{{ (preg_match('(basic)', Route::currentRouteName()) === 1) ? 'text-info enlarge_text' : '' }}">基本資料</a></span>
                     </a>
                 </li>
             </ul>
@@ -113,6 +113,45 @@
             </a>
           </li>
         </ul>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#">
+          <span class="icon-holder">
+          <i class="fab fa-line"></i>
+          </span>
+          <span class="title">LINE@ 串接</span>
+          <span class="arrow">
+            <i class="fas fa-angle-right"></i>
+          </span>
+        </a>
+        @php
+        if(preg_match('(line)', Route::currentRouteName()) === 1) {
+            $line_dropdown=true;
+        }else{
+            $line_dropdown=false;
+        }
+        @endphp
+
+        @if($line_dropdown)
+        <ul class="dropdown-menu stay-open">
+        @else
+        <ul class="dropdown-menu">
+        @endif
+
+
+
+          <li class="nav-item dropdown">
+
+
+            <a class="nav-link dropdown-toggle" href="#">
+              <span><a href="{{route('line')}}" class="{{ (preg_match('(line)', Route::currentRouteName()) === 1) ? 'text-info enlarge_text' : '' }}">安親班LINE@</a></span>
+            </a>
+          </li>
+        </ul>
+
+
+
       </li>
     </ul>
   </div>

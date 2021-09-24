@@ -63,4 +63,17 @@ class AppController extends Controller
         }
         return $student_a;
     }
+    public function line_notify(Request $request){
+        $school=$request->user()->school;
+        $id=$request['id'];
+        $student=$this->studentRepo->find($id);
+        $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($school->LineChannelAccessToken);
+        $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $school->LineChannelSecret]);
+
+        $message="您的孩子".$student->name."已經到班囉!";
+        $push_build = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
+        $result=$bot->pushMessage($student->parent_line,$push_build);
+        return $result->getHTTPStatus();
+    }
+
 }

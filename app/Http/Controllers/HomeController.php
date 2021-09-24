@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ClasssRepository;
 use App\Repositories\StudentRepository;
 use Auth;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -17,12 +18,14 @@ class HomeController extends Controller
 
     protected $classsRepo;
     protected $studentRepo;
-
+    //protected $global_test;
     public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo)
     {
         $this->middleware(['auth','verified']);
         $this->classsRepo=$classsRepo;
         $this->studentRepo=$studentRepo;
+        //$this->global_test="global_test123123";
+        //View::share("global_test",$this->global_test);
     }
 
     /**
@@ -35,6 +38,7 @@ class HomeController extends Controller
         return view('index');
     }
     public function classs(){
+
         $school_classs=Auth::user()->school->classs;
         $school_batch=Auth::user()->school->batch;
         $all_student=$this->studentRepo->get_all_student();
@@ -91,6 +95,10 @@ class HomeController extends Controller
     }
     public function basic(){
         return view('basic');
+    }
+    public function line(){
+        $school=Auth::user()->school;
+        return view('line',['school'=>$school]);
     }
 
 }

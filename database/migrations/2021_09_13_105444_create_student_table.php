@@ -19,6 +19,7 @@ class CreateStudentTable extends Migration
             //$table->unsignedBigInteger('Batch_id');
             $table->unsignedBigInteger('Classs_id');
             $table->unsignedBigInteger('order');
+            $table->string('STU_id');
             $table->string('name');
             $table->string('gender')->nullable();
             $table->string('school')->nullable();

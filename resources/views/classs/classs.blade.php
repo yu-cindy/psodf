@@ -179,6 +179,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>學號</td>
+                            <td>
+                            <p id="st_STU_id"></p>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>班級 (必填)<p><small class="text-info">可在此設定轉班</small></p></td>
                             <td>
                             <select id="st_Classs_id" name="Classs_id" class="form-select form-control"  aria-label="Default select example" required="required">
@@ -245,6 +251,12 @@
                             <td>家長電話</td>
                             <td>
                             <input class="form-control"  type="text" id="st_parent_phone" name="parent_phone"  placeholder="請輸入家長電話" required="required" value="" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>家長的LINE</td>
+                            <td>
+                            <p id="st_parent_line"></p>
                             </td>
                         </tr>
                         <tr>
@@ -407,7 +419,7 @@
 
         <div class="container pt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header d-flex flex-row" >
                         <h5 class="font-weight-bold text-success mr-5 my_nav_text">學生一覽</h5>
@@ -432,8 +444,9 @@
                                 <thead>
                                 <tr class=" ">
                                     <th>學生姓名</th>
+                                    <th>學號</th>
                                     <th>學生班級</th>
-
+                                    <th>家長的LINE</th>
                                     <th>備註</th>
 
                                     <th>設定</th>
@@ -445,7 +458,15 @@
 
                                 <tr>
                                     <td>{{ $student->name }}</td>
+                                    <td>{{ $student->STU_id }}</td>
                                     <td>{{$student->classs->Classs_Name}}</td>
+                                    <td>
+                                        @if($student->parent_line==null)
+                                        尚未加入
+                                        @else
+                                        已加入
+                                        @endif
+                                    </td>
                                     <td><pre>{{$student->memo }}</pre></td>
 
                                     <td class="student_edit_btn"><a href="#"><i class="fas fa-cogs my_nav_text" data-target="#Student_update" data-toggle="modal"></i></a></td>
@@ -565,6 +586,8 @@ student_edit_btn.forEach(function(item,index){
         document.getElementById('st_parent_name').value='';
         document.getElementById('st_parent_phone').value='';
         document.getElementById('st_memo').value='';
+        document.getElementById('st_STU_id').value='';
+        document.getElementById('st_parent_line').value="";
         //document.getElementById('Classs_memo_edit').value='';
         s_id=student_edit_id[index].innerHTML;
         console.log('s_id',s_id)
@@ -573,6 +596,7 @@ student_edit_btn.forEach(function(item,index){
             document.getElementById('st_id').value=all_student[where].id;
             document.getElementById('st_name').value=all_student[where].name;
             document.getElementById('st_Classs_id').value=all_student[where].Classs_id;
+            document.getElementById('st_STU_id').innerHTML=all_student[where].STU_id;
             if(all_student[where].school!=null){
                 document.getElementById('st_school').value=all_student[where].school;
             }
@@ -591,6 +615,12 @@ student_edit_btn.forEach(function(item,index){
             if(all_student[where].grade!=null){
                 document.getElementById('st_grade').value=all_student[where].grade;
             }
+            if(all_student[where].parent_line!=null){
+                document.getElementById('st_parent_line').innerHTML="<span class='text-success'>"+"已加入"+"</span>";
+            }else{
+                document.getElementById('st_parent_line').innerHTML="<span class='text-danger'>"+"尚未加入"+"</span>";
+            }
+
         }
     })
 })

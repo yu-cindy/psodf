@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\LINEController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +49,10 @@ Route::post('/batch/update', [SettingController::class, 'batch_update'])->name('
 Route::post('/batch/delete', [SettingController::class, 'batch_delete'])->name('batch.delete');
 Route::get('api_test', [AppController::class, 'api_test']);
 Route::post('/app/login', [AppController::class, 'login']);
+Route::get('/line', [HomeController::class, 'line'])->name('line');
+Route::post('/line', [SettingController::class, 'line_update'])->name('line.update');
+
+
+Route::post('/callback/{id}', [LINEController::class, 'post'])->name('lintbot_api');
+
+

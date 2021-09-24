@@ -16,7 +16,7 @@
                 @csrf
                 <div class="card">
                     <div class="card-header d-flex flex-row" >
-                        <h5 class="font-weight-bold text-success mr-5 my_nav_text">基本設定</h5>
+                        <h5 class="font-weight-bold text-success mr-5 my_nav_text">基本資料</h5>
                     </div>
                     <div class="card-body">
 
@@ -47,6 +47,6 @@
 
 @section('js')
 <script>
-document.getElementById('nav_title').innerHTML="<small>基本設定</small>";
+document.getElementById('nav_title').innerHTML="<small>基本資料</small>";
 </script>
 @endsection

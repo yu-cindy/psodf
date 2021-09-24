@@ -10,9 +10,20 @@ class StudentRepository
     public function find($id){
         return student::find($id);
     }
-    public function store(array $data,$classs_id,$count){
+    public function store(array $data,$classs,$classs_id,$count){
         $now = date('Y-m-d H:i:s');
         $data['School_id']=Auth::user()->School_id;
+        $STU_id =strval(Auth::user()->School_id)
+                .strval($classs->batch->id)
+                .strval($classs_id)
+                .strval($random_num=strval(rand(1000,9999)));
+        while(student::where('STU_id',$STU_id)->exists()) {
+            $STU_id =strval(Auth::user()->School_id)
+                .strval($classs->batch->id)
+                .strval($classs_id)
+                .strval($random_num=strval(rand(1000,9999)));
+        }
+        $data['STU_id']=$STU_id;
         //$data['Batch_id']=$batch_id;
         $data['Classs_id']=$classs_id;
         $data['order']=$count;
@@ -61,6 +72,13 @@ class StudentRepository
     }
     public function delete($id){
         return student::destroy($id);
+    }
+
+    public function check_stuid($STU_id){
+        return student::where('STU_id',$STU_id)->first();
+    }
+    public function add_parent_line($id,$userId){
+        return student::where('id','=',$id)->update(array('parent_line' => $userId));
     }
 
 

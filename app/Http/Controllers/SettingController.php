@@ -101,7 +101,7 @@ class SettingController extends Controller
                 if($student['name']!=null){
                     $classs_id=(isset($student['Classs_id'])) ? $student['Classs_id'] : $classs_id;
                     if($student['id']==null){
-                        $this->studentRepo->store($student,$classs_id,$count);
+                        $this->studentRepo->store($student,$classs,$classs_id,$count);
                     }else{
                         $this->studentRepo->update($student,$classs_id,$count,$student['id']);
                     }
@@ -200,4 +200,44 @@ class SettingController extends Controller
             return redirect()->route('basic')->with('error_msg', '基本資料更新失敗！');
         }
     }
+    public function line_update(Request $request){
+        //dd($request->all());
+        $school = Auth::user()->school;
+        $school->LineID = isset($request['Linedisbtn']) ? null : $request['LineID'];
+        $school->LineChannelSecret = isset($request['Linedisbtn']) ? null : $request['LineChannelSecret'];
+        $school->LineChannelAccessToken = isset($request['Linedisbtn']) ? null : $request['LineChannelAccessToken'];
+        if(isset($request['Linedisbtn'])){
+            $school->LineChannelName=null;
+            $school->save();
+            return redirect()->route('line')->with('success_msg', '已斷開LINE@連接！');
+        }else{
+            $LineChannelName=$this->get_LineChannelName($request['LineChannelAccessToken']);
+            if(isset($LineChannelName)){
+                $school->LineChannelName=$LineChannelName;
+                $school->save();
+                return redirect()->route('line')->with('success_msg', 'LINE@串接成功！');
+            }else{
+                return redirect()->route('line')->with('error_msg', '輸入資料有誤，查無資料！');
+            }
+        }
+    }
+    public function get_LineChannelName($access_token){
+        $url = "https://api.line.me/v2/bot/info";
+        $ch = curl_init();
+        $authorization = "Authorization: Bearer " . $access_token;
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $json_result = curl_exec($ch);
+        $resultStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($resultStatus == 200) {
+            $result=json_decode($json_result,true);
+	        $result=$result['displayName'];
+        }else{
+            $result=null;
+        }
+        curl_close($ch);
+        return $result;
+    }
+
 }

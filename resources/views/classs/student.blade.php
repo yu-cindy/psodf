@@ -16,7 +16,6 @@
 
 @section('stage')
 <div class="container">
-
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
@@ -39,7 +38,7 @@
 @endsection
 
 @section('js')
-<script src="{{asset('vendor/jquery.appendGrid-master/dist/appendGrid.js')}}"></script>
+<script src="{{asset('vendor/jquery.appendGrid-master/dist/AppendGrid.js')}}"></script>
 <script>
 document.getElementById('nav_title').innerHTML="<small>學生名單</small>";
 var this_classs={!! json_encode($this_classs) !!};

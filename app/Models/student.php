@@ -23,6 +23,7 @@ class student extends Model
         //'Batch_id',
         'Classs_id',
         'order',
+        'STU_id',
         'name',
         'gender',
         'school',
