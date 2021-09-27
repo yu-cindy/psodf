@@ -7,6 +7,8 @@ use App\Repositories\ClasssRepository;
 use App\Repositories\StudentRepository;
 use App\Repositories\BatchRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Storage;
+use App\Jobs\LineNotify;
 
 
 class AppController extends Controller
@@ -69,11 +71,47 @@ class AppController extends Controller
         $student=$this->studentRepo->find($id);
         $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($school->LineChannelAccessToken);
         $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $school->LineChannelSecret]);
+        $return =array();
+        if($student && $student->parent_line){
+            $message="您的孩子".$student->name."已經到班囉!";
+            $push_build = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
+            $result=$bot->pushMessage($student->parent_line,$push_build);
+            $return['status']=$result->getHTTPStatus();
+        }else{
+            $return['status']=404;
+        }
+        return json_encode($return);
+    }
 
-        $message="您的孩子".$student->name."已經到班囉!";
-        $push_build = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
-        $result=$bot->pushMessage($student->parent_line,$push_build);
-        return $result->getHTTPStatus();
+    public function notify_queue(Request $request){
+        $school=$request->user()->school;
+        $School_id=$school->id;
+        $id=$request['id'];
+        $student=$this->studentRepo->find($id);
+
+        $new_img="image";
+        $return=array();
+        $return['status']="failed";
+        if ($request->hasFile($new_img)){
+            $file = $request->file($new_img);
+            if ($file->isValid()){
+                if($student && $student->parent_line){
+
+                    $extension = $file->getClientOriginalExtension();
+                    $path = 'NotifyTmp/' .$School_id. '/'. $id . '.' . $extension;
+                    $result2=Storage::disk('public')->put($path, $request->file($new_img)->get());
+                    if(Storage::disk('public')->exists($path))
+                        $image_path = Storage::url($path);
+
+                    if($result2){
+                        LineNotify::dispatch($school,$student,$image_path);
+                        $return['status']="successed";
+                    }
+
+                }
+            }
+        }
+        return json_encode($return);
     }
 
 }

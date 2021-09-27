@@ -34,6 +34,7 @@ Route::middleware('auth:api')->get('/student', function(Request $request) {
 Route::middleware('auth:api')->get('/batch/{id}/class', [AppController::class, 'batch_find_class']);
 Route::middleware('auth:api')->get('/class/{id}/student', [AppController::class, 'class_find_student']);
 Route::middleware('auth:api')->post('/line/notify', [AppController::class, 'line_notify']);
+Route::middleware('auth:api')->post('/line/notify_queue', [AppController::class, 'notify_queue']);
 
 
 
