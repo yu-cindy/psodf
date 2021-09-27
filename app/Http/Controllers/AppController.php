@@ -96,14 +96,14 @@ class AppController extends Controller
             $file = $request->file($new_img);
             if ($file->isValid()){
                 if($student && $student->parent_line){
-
+                    $date = date('Y_m_d_');
                     $extension = $file->getClientOriginalExtension();
-                    $path = 'NotifyTmp/' .$School_id. '/'. $id . '.' . $extension;
-                    $result2=Storage::disk('public')->put($path, $request->file($new_img)->get());
+                    $path = 'NotifyTmp/' .$School_id. '/'. $id . '/'.$date. uniqid('', true) . '.' . $extension;
+                    $result=Storage::disk('public')->put($path, $request->file($new_img)->get());
                     if(Storage::disk('public')->exists($path))
                         $image_path = Storage::url($path);
 
-                    if($result2){
+                    if($result && $image_path){
                         LineNotify::dispatch($school,$student,$image_path);
                         $return['status']="successed";
                     }

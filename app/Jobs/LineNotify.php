@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\student;
 use App\Models\school;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 
 class LineNotify implements ShouldQueue
 {
@@ -51,7 +52,7 @@ class LineNotify implements ShouldQueue
             $push_build1 = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
 
             //$url=str_replace('http://','https://',url($this->image_path));
-            $ngrok="https://7577-61-220-205-150.ngrok.io";
+            $ngrok="https://e761-61-220-205-150.ngrok.io";
             $url=str_replace('http://psodf.local',$ngrok,url($this->image_path));
             $push_build2 = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url,$url);
 
@@ -59,6 +60,7 @@ class LineNotify implements ShouldQueue
             $MessageBuilder->add($push_build2);
 
             $result=$bot->pushMessage($this->student->parent_line,$MessageBuilder);
+
         }
     }
 }
