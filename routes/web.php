@@ -51,6 +51,8 @@ Route::get('api_test', [AppController::class, 'api_test']);
 Route::post('/app/login', [AppController::class, 'login']);
 Route::get('/line', [HomeController::class, 'line'])->name('line');
 Route::post('/line', [SettingController::class, 'line_update'])->name('line.update');
+Route::get('/signin', [HomeController::class, 'signin'])->name('signin');
+Route::get('/signin/{classs_id}/{date}/result', [HomeController::class, 'signin_result'])->name('signin.result');
 
 
 Route::post('/callback/{id}', [LINEController::class, 'post'])->name('lintbot_api');

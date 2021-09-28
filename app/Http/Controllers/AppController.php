@@ -7,6 +7,7 @@ use App\Repositories\ClasssRepository;
 use App\Repositories\StudentRepository;
 use App\Repositories\BatchRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\SigninRepository;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\LineNotify;
 
@@ -17,13 +18,15 @@ class AppController extends Controller
     protected $studentRepo;
     protected $batchRepo;
     protected $userRepo;
+    protected $signinRepo;
 
-    public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo,BatchRepository $batchRepo,UserRepository $userRepo)
+    public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo,BatchRepository $batchRepo,UserRepository $userRepo,SigninRepository $signinRepo)
     {
         $this->classsRepo=$classsRepo;
         $this->studentRepo=$studentRepo;
         $this->batchRepo=$batchRepo;
         $this->userRepo=$userRepo;
+        $this->signinRepo=$signinRepo;
     }
     public function api_test(){
         //$return_total=array();
@@ -88,6 +91,7 @@ class AppController extends Controller
         $School_id=$school->id;
         $id=$request['id'];
         $student=$this->studentRepo->find($id);
+        $classs=$student->classs;
 
         $new_img="image";
         $return=array();
@@ -104,8 +108,21 @@ class AppController extends Controller
                         $image_path = Storage::url($path);
 
                     if($result && $image_path){
+                        $today=date('Y-m-d');
+                        $now = date('Y-m-d H:i:s');
                         LineNotify::dispatch($school,$student,$image_path);
                         $return['status']="successed";
+
+                        $signin=array();
+                        $signin['School_id']=$School_id;
+                        $signin['Classs_id']=$classs->id;
+                        $signin['Student_id']=$id;
+                        $signin['Classs_Name']=$classs->Classs_Name;
+                        $signin['Student_Name']=$student->name;
+                        $signin['signin_img']=$image_path;
+                        $signin['created_date']=$today;
+                        $signin['created_at']=$now;
+                        $this->signinRepo->store($signin);
                     }
 
                 }

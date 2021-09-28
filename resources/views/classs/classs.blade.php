@@ -375,7 +375,7 @@
                         <button class="btn btn-link  shadow-none" type="button" id="show_all_btn"><small>全部梯次</small></button>
                         </div>
                         <div class="table-responsive">
-                            <table id="classs_table" class="table dataTable table-hover text-center text-middle" id="dataTable" width="100%" cellspacing="0">
+                            <table id="classs_table" class="table dataTable table-hover text-center text-middle"  width="100%" cellspacing="0">
                                 <thead>
                                 <tr class="my_nav_color text-light">
                                     <th>班級名稱</th>
@@ -440,7 +440,7 @@
                         <button class="btn btn-link  shadow-none" type="button" id="show_all_btn2"><small>全部班級</small></button>
                         </div>
                         <div class="table-responsive">
-                            <table id="student_table" class="table dataTable table-hover text-center text-middle" id="dataTable" width="100%" cellspacing="0">
+                            <table id="student_table" class="table dataTable table-hover text-center text-middle"  width="100%" cellspacing="0">
                                 <thead>
                                 <tr class=" ">
                                     <th>學生姓名</th>

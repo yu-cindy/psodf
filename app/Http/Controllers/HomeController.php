@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\ClasssRepository;
 use App\Repositories\StudentRepository;
+use App\Repositories\SigninRepository;
 use Auth;
 use Illuminate\Support\Facades\View;
 
@@ -18,12 +19,14 @@ class HomeController extends Controller
 
     protected $classsRepo;
     protected $studentRepo;
+    protected $signinRepo;
     //protected $global_test;
-    public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo)
+    public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo,SigninRepository $signinRepo)
     {
         $this->middleware(['auth','verified']);
         $this->classsRepo=$classsRepo;
         $this->studentRepo=$studentRepo;
+        $this->signinRepo=$signinRepo;
         //$this->global_test="global_test123123";
         //View::share("global_test",$this->global_test);
     }
@@ -99,6 +102,18 @@ class HomeController extends Controller
     public function line(){
         $school=Auth::user()->school;
         return view('line',['school'=>$school]);
+    }
+    public function signin(){
+        $today=date('Y-m-d');
+        $school_classs=Auth::user()->school->classs;
+        return view('signin.signin',['today'=>$today,'school_classs'=>$school_classs]);
+    }
+    public function signin_result($classs_id, $date){
+        $classs=$this->classsRepo->find($classs_id);
+        $classs_name=$classs->Classs_Name;
+        $student=$classs->student;
+        $signin=$this->signinRepo->get_signin($classs_id,$date);
+        return view('signin.result',['signin'=>$signin,'date'=>$date,'student'=>$student,'classs_name'=>$classs_name]);
     }
 
 }
