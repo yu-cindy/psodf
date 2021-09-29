@@ -8,6 +8,7 @@ use App\Repositories\StudentRepository;
 use App\Repositories\SigninRepository;
 use Auth;
 use Illuminate\Support\Facades\View;
+use App\Repositories\MessageRepository;
 
 class HomeController extends Controller
 {
@@ -21,12 +22,13 @@ class HomeController extends Controller
     protected $studentRepo;
     protected $signinRepo;
     //protected $global_test;
-    public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo,SigninRepository $signinRepo)
+    public function __construct(ClasssRepository $classsRepo,StudentRepository $studentRepo,MessageRepository $messageRepo,SigninRepository $signinRepo)
     {
         $this->middleware(['auth','verified']);
         $this->classsRepo=$classsRepo;
         $this->studentRepo=$studentRepo;
         $this->signinRepo=$signinRepo;
+        $this->messageRepo=$messageRepo;
         //$this->global_test="global_test123123";
         //View::share("global_test",$this->global_test);
     }
@@ -114,6 +116,23 @@ class HomeController extends Controller
         $student=$classs->student;
         $signin=$this->signinRepo->get_signin($classs_id,$date);
         return view('signin.result',['signin'=>$signin,'date'=>$date,'student'=>$student,'classs_name'=>$classs_name]);
+    }
+    public function message(Request $request){
+        //dd($request->all());
+        $school_classs=Auth::user()->school->classs;
+        //$school_batch=Auth::user()->school->batch;
+        $all_student=$this->messageRepo->get_all_student();
+        $all_message=$this->messageRepo->get_all_message();
+        if(isset($_GET['success_msg'])){
+            return redirect()->route('message')->with('success_msg', $_GET['success_msg']);
+        }
+        elseif(isset($_GET['error_msg'])){
+            return redirect()->route('message')->with('error_msg', $_GET['error_msg']);
+        }
+        else{
+            return view('message',['school_classs'=>$school_classs,'all_student'=>$all_student,'all_message'=>$all_message]);
+        }
+        
     }
 
 }

@@ -53,7 +53,11 @@ Route::get('/line', [HomeController::class, 'line'])->name('line');
 Route::post('/line', [SettingController::class, 'line_update'])->name('line.update');
 Route::get('/signin', [HomeController::class, 'signin'])->name('signin');
 Route::get('/signin/{classs_id}/{date}/result', [HomeController::class, 'signin_result'])->name('signin.result');
-
+Route::get('/message', [HomeController::class, 'message'])->name('message');
+Route::post('/message/store', [SettingController::class, 'message_store'])->name('message.store');
+Route::post('/message/update', [SettingController::class, 'message_update'])->name('message.update');
+Route::post('/message/delete', [SettingController::class, 'message_delete'])->name('message.delete');
+Route::post('/message/send', [SettingController::class, 'message_send'])->name('message.send');
 
 Route::post('/callback/{id}', [LINEController::class, 'post'])->name('lintbot_api');
 

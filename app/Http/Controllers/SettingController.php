@@ -7,6 +7,7 @@ use App\Repositories\ClasssRepository;
 use App\Repositories\BatchRepository;
 use App\Repositories\StudentRepository;
 use App\Repositories\SchoolRepository;
+use App\Repositories\MessageRepository;
 use Auth;
 
 class SettingController extends Controller
@@ -16,13 +17,14 @@ class SettingController extends Controller
     protected $studentRepo;
     protected $schoolRepo;
 
-    public function __construct(ClasssRepository $classsRepo,BatchRepository $batchRepo,StudentRepository $studentRepo,SchoolRepository $schoolRepo)
+    public function __construct(ClasssRepository $classsRepo,BatchRepository $batchRepo,StudentRepository $studentRepo,SchoolRepository $schoolRepo,MessageRepository $messageRepo)
     {
         $this->middleware(['auth','verified']);
         $this->classsRepo=$classsRepo;
         $this->batchRepo=$batchRepo;
         $this->studentRepo=$studentRepo;
         $this->schoolRepo=$schoolRepo;
+        $this->messageRepo=$messageRepo;
     }
 
     public function classs_store(Request $request){
@@ -238,6 +240,67 @@ class SettingController extends Controller
         }
         curl_close($ch);
         return $result;
+    }
+    public function message_store(Request $request){
+        $result=$this->messageRepo->store($request->all());
+        if($result){
+            return redirect()->route('message')->with('success_msg', '訊息範本已創建！');
+        }else{
+            return redirect()->route('message')->with('error_msg', '訊息範本創建失敗！');
+        }
+    }
+    public function message_update(Request $request){
+        $id=$request['message_update_id'];
+        $result = $this->messageRepo->update($request->all(),$id);
+        if($result){
+            return redirect()->route('message')->with('success_msg', '訊息範本已編輯！');
+        }else{
+            return redirect()->route('message')->with('error_msg', '訊息範本編輯失敗！');
+        }
+    }
+    public function message_delete(Request $request){
+        $id=$request['id'];
+        $result=$this->messageRepo->delete($id);
+        if($result){
+            $return['result']="success";
+            $return['msg']="範本已刪除！";
+        }else{
+            $return['result']="error";
+            $return['msg']="範本刪除失敗！";
+        }
+
+        return json_encode($return);
+    }
+    public function message_send(Request $request){
+
+        $school=Auth::user()->school;
+        
+        $re = $request->all();
+        $stu_array = [];
+        foreach($re as $key => $value)
+        {
+            if(substr($key,0,7) == "student")
+            {
+                array_push($stu_array,$value);
+            }
+        }
+        $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($school->LineChannelAccessToken);
+        $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $school->LineChannelSecret]);
+        $return =array();
+        foreach($stu_array as $key =>$value){
+            if(isset($value)){
+                $message=$re['Message_Data'];
+                $push_build = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($message);
+                $result=$bot->pushMessage($value,$push_build);
+                $return['status']=$result->getHTTPStatus();
+                return redirect()->route('message')->with('success_msg', '訊息已發送！');;
+            }else{
+                $return['status']=404;
+                return redirect()->route('message')->with('error_msg', '訊息發送失敗！');
+            }
+        }
+        //return json_encode($return);
+        
     }
 
 }

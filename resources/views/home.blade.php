@@ -158,6 +158,39 @@
 
       </li>
 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#">
+          <span class="icon-holder">
+          <i class="fas fa-comments"></i>
+          </span>
+          <span class="title">訊息發送</span>
+          <span class="arrow">
+            <i class="fas fa-angle-right"></i>
+          </span>
+        </a>
+        @php
+        if(preg_match('(message)', Route::currentRouteName()) === 1) {
+            $message_dropdown=true;
+        }else{
+            $message_dropdown=false;
+        }
+        @endphp
+
+        @if($message_dropdown)
+        <ul class="dropdown-menu stay-open">
+        @else
+        <ul class="dropdown-menu">
+        @endif
+
+
+
+          <li class="nav-item dropdown">
+
+
+            <a class="nav-link dropdown-toggle" href="#">
+              <span><a href="{{route('message')}}" class="{{ (preg_match('(message)', Route::currentRouteName()) === 1) ? 'text-info enlarge_text' : '' }}">訊息</a></span>
+            </a>
+          </li>
     </ul>
   </div>
 </div>
