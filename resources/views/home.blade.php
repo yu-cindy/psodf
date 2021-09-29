@@ -191,6 +191,8 @@
               <span><a href="{{route('message')}}" class="{{ (preg_match('(message)', Route::currentRouteName()) === 1) ? 'text-info enlarge_text' : '' }}">訊息</a></span>
             </a>
           </li>
+      </ul>
+      </li>
     </ul>
   </div>
 </div>
