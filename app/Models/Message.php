@@ -19,7 +19,7 @@ class Message extends Model
         'School_id',
         'name',
         'data',
-        'created_at',   
+        'created_at',
         'updated_at'
     ];
 }

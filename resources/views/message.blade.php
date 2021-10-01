@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group">
                         <label for="Message_Data" class="font-weight-bold my_nav_text enlarge_text">格式</label>
-                        <textarea  name="Message_Data" class="form-control" rows="6" placeholder="請輸入格式"></textarea>
+                        <textarea  name="Message_Data" class="form-control" rows="6" placeholder="請輸入格式" ></textarea>
                     </div>
                     <div class="form-group">
                     <div class="float-right">
@@ -107,12 +107,12 @@
                         </div>
                         <div class="col">
                             <label for="Message_Data" class="font-weight-bold my_nav_text enlarge_text">訊息格式</label>
-                            <textarea  id="Message_Data_send" name="Message_Data" class="form-control" rows="6"  style="width: 300px;" readonly></textarea>
+                            <textarea  id="Message_Data_send" name="Message_Data" class="form-control" rows="6"  style="width: 300px;" ></textarea>
                         </div>
                     </div>
                     <div>
                         <p class="mb-3  " style="font-size:15px;color:#ff0000";>*家長若未加入，則無法勾選</p>
-                        
+
                     </div>
                     <div class="form-group ">
                         <div id="accordion">
@@ -156,7 +156,7 @@
                             @endforeach
                         </div>
                     </div>
-                    
+
                     <div class="form-group ">
                     <div class="float-right">
                     <input class="hidden_object" id="message_update_id" name="message_update_id" value="" >
@@ -219,7 +219,7 @@
 
                             </tbody>
                         </table>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -328,8 +328,8 @@ message_send_btn.forEach(function(item,index){
                 document.getElementById('Message_Data_send').value=all_message[where].data;
             }
         }
-    
-        
+
+
     })
 })
 

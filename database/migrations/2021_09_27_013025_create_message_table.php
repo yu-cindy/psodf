@@ -17,7 +17,7 @@ class CreateMessageTable extends Migration
             $table->id();
             $table->unsignedBigInteger('School_id');
             $table->string('name');
-            $table->json('data');
+            $table->longText('data')->nullable();
             $table->timestamps();
         });
     }
