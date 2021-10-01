@@ -93,7 +93,7 @@
     </div>
 </form>
 
-<form action="{{ route('message.send') }}" method="POST" enctype="multipart/form-data">
+<form name="message_send_form" action="{{ route('message.send') }}" method="POST" enctype="multipart/form-data" >
 @csrf
     <div class="modal fade" id="MessageModal_send" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
@@ -161,7 +161,7 @@
                     <div class="float-right">
                     <input class="hidden_object" id="message_update_id" name="message_update_id" value="" >
                     <a href="#" class="btn btn-secondary" id="message_send_cancel">取消</a>
-                    <button type="submit" class="btn text-light my_nav_color" id="message_send_submit">發送</button>
+                    <button type="submit" class="btn text-light my_nav_color" id="message_send_submit" onclick="return false">發送</button>
                     </div>
                     </div>
                 </div>
@@ -260,9 +260,9 @@ $(document).ready(function() {
         destroy:true,
         "oSearch": {"sSearch": ""}
     } );
+    
 
-
-} );
+});
 $('#message_store_cancel').click(function() {
     $('#MessageModal').modal('hide');
 });
@@ -275,7 +275,16 @@ $('#confirm_delete_cancel').click(function() {
 $('#message_send_cancel').click(function() {
     $('#MessageModal_send').modal('hide');
 });
-
+$('#message_send_submit').click(function(){
+        var Checkboxes = $("input[type='checkbox']:checked").length;
+        console.log(Checkboxes);
+        if(Checkboxes==0){
+            alert("請選擇發送對象");   
+        }
+        else{
+            document.message_send_form.submit();
+        }
+    });
 
 $('#search_result_div').hide();
 $('#search_student_btn').click(function() {
